@@ -132,6 +132,7 @@ namespace Datime {
 		tanggal() = default;
 		CEI tanggal(const tahun& y, const bulan& m, const hari& d) noexcept
 			: y_(y),m_(m),d_(d) {}
+
 		CEI tanggal& operator+=(const hari& n)noexcept {
 			int nd = int(d_) + int(n);
 			int nm = dom();
@@ -193,6 +194,20 @@ namespace Datime {
 			return *this;
 		}
 	
+		CEI tanggal& operator+=(const tanggal& n)noexcept {
+			*this += n.y_;
+			*this += n.m_;
+			*this += n.d_;
+			return *this;
+		}
+		CEI tanggal& operator-= (const tanggal& n)noexcept {
+			*this -= n.y_;
+			*this -= n.m_;
+			*this -= n.d_;
+			return *this;
+		}
+
+
 		CEI int dom(int y,int m) const noexcept {
 			constexpr int dpm[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 			Datime::tahun _y{ y };
@@ -307,6 +322,13 @@ namespace Datime {
 		tmp -= y;
 		return tmp;
 	}
+	CEI bool operator==(const waktu& x, const waktu& y) noexcept {
+		return x.detik() == y.detik();
+	}
+	CEI bool operator!=(const waktu& x, const waktu& y) noexcept {
+		return !(x == y);
+	}
+
 	CEI waktu operator+(const waktu& x, const detik& y) noexcept {
 		waktu tmp = x;
 		tmp += y;
@@ -361,6 +383,18 @@ namespace Datime {
 	CEI waktu operator-(const waktu& x, const waktu& y) noexcept {
 		return waktu{ x.detik() - y.detik() };
 	}
+	CEI bool operator>(const waktu& x, const waktu& y) noexcept {
+		return x.detik() > y.detik();
+	}
+	CEI bool operator<(const waktu& x, const waktu& y) noexcept {
+		return x.detik() < y.detik();
+	}
+	CEI bool operator>=(const waktu& x, const waktu& y) noexcept {
+		return x.detik() >= y.detik();
+	}
+	CEI bool operator<=(const waktu& x, const waktu& y) noexcept {
+		return x.detik() <= y.detik();
+	}
 
 	class tanggalwaktu {
 		tanggal tgl;
@@ -371,6 +405,10 @@ namespace Datime {
 		CEI tanggalwaktu(const tanggal& t, const waktu& w) noexcept :tgl(t), wkt(w) {}
 		CEI tanggalwaktu(const int& y, const int& m, const int& d=1, const int& h=0, const int& mm=0, const int& s=0) noexcept
 			:tgl{ y,m,d }, wkt{ h,mm,s } {
+		}
+		CEI tanggalwaktu& operator+=(const tanggal& n)noexcept {
+			tgl += n;
+			return *this;
 		}
 		CEI tanggalwaktu& operator+=(const hari& n)noexcept {
 			tgl += n;
@@ -458,5 +496,35 @@ namespace Datime {
 			return os;
 		}
 	};
+	CEI bool operator==(const tanggalwaktu& x, const tanggalwaktu& y) noexcept {
+		return x.tanggal() == y.tanggal() && x.waktu() == y.waktu();
+	}
+	CEI bool operator!=(const tanggalwaktu& x, const tanggalwaktu& y) noexcept {
+		return !(x == y);
+	}
+	CEI bool operator<(const tanggalwaktu& x, const tanggalwaktu& y) noexcept {
+		if (x.tanggal() < y.tanggal()) return true;
+		if (x.tanggal() > y.tanggal()) return false;
+		return x.waktu() < y.waktu();
+	}
+	CEI bool operator>(const tanggalwaktu& x, const tanggalwaktu& y) noexcept {
+		return y < x;
+	}
+	CEI bool operator<=(const tanggalwaktu& x, const tanggalwaktu& y) noexcept {
+		return !(y < x);
+	}
+	CEI bool operator>=(const tanggalwaktu& x, const tanggalwaktu& y) noexcept {
+		return !(x < y);
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const hari& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const hari& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
 }
 
