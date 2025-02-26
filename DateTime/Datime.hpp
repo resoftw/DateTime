@@ -40,6 +40,7 @@ namespace Datime {
 	public:
 		bulan() = default;
 		CEI bulan(int b) noexcept :b_(static_cast<decltype(b_)>(b)) {}
+		CEI bulan(Bulan b) noexcept :b_(static_cast<decltype(b_)>(b)) {}
 		CEI bulan& operator++() noexcept { *this += bulan{1}; return *this; }
 		CEI bulan operator++(int) noexcept { auto tmp(*this); ++(*this); return tmp; }
 		CEI bulan& operator--() noexcept { *this -= bulan{1}; return *this; }
@@ -132,6 +133,12 @@ namespace Datime {
 		tanggal() = default;
 		CEI tanggal(const tahun& y, const bulan& m, const hari& d) noexcept
 			: y_(y),m_(m),d_(d) {}
+		CEI tanggal(const int& y, const int& m, const int& d) noexcept
+			: y_(y), m_(m), d_(d) {
+		}
+		CEI tanggal(const int& y, const Bulan& m, const int& d) noexcept
+			: y_(y), m_(m), d_(d) {
+		}
 
 		CEI tanggal& operator+=(const hari& n)noexcept {
 			int nd = int(d_) + int(n);
