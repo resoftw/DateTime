@@ -6,12 +6,11 @@ using namespace Datime;
 
 int main()
 {
-    auto y1 = tahun{ 1950 };
-    cout << y1 << "\n";
-    cout << y1++ << "\n";
-    y1 += 100;
-    cout << y1 << "\n";
-    y1 += tahun{50};
-    cout << y1 << "\n";
+	tanggal tgl{2024,12,29};
+	for (int i = 0; i < 10; i++)
+	{
+		cout << tgl << endl;
+		tgl += hari{ 7 };
+	}
 }
 

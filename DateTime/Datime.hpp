@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <iomanip>
 namespace Datime {
 #define CEI constexpr inline	
 #define CE constexpr
@@ -94,13 +96,40 @@ namespace Datime {
 		CEI tanggal& operator+=(const hari& h)noexcept {
 			int d = d_;
 			int n = h;
-			d_ += h;
-
+			int nd = d + n;
+			int nm = dom();
+			while (nd > nm) {
+				nd -= nm;
+				++m_;
+				if (m_ == 13) {
+					++y_;
+					m_ = 1;
+				}
+				nm = dom();
+			}
+			while (nd < 1) {
+				--m_;
+				if (m_ == 0) {
+					--y_;
+					m_ = 12;
+				}
+				nd += dom();
+			}
+			d_ = nd;
+			return *this;
 		}
-
-		CEI int dom() const noexcept {
+		CEI int dom(int y,int m) const noexcept {
 			constexpr int dpm[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-			return (m_ == 2 && y_.kabisat()) ? 29 : dpm[int(m_) - 1];
+			tahun _y{ y };
+			bulan _m{ m };
+			return (_m == 2 && _y.kabisat()) ? 29 : dpm[int(_m) - 1];
+		}
+		CEI int dom() const noexcept {
+			return dom(y_,m_);
+		}
+		friend std::ostream& operator<<(std::ostream& os, const tanggal& d) {
+			os << d.y_ <<"/"<<std::setfill('0') << std::setw(2) <<d.m_<<"/"<< std::setfill('0') << std::setw(2)<<d.d_;
+			return os;
 		}
 	};
 	class waktu {
