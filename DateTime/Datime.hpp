@@ -62,7 +62,8 @@ namespace Datime {
 		CEI hari operator--(int) noexcept { auto tmp(*this); --(*this); return tmp; }
 		CEI hari& operator+=(const hari& h) noexcept { *this = *this + h; return *this; }
 		CEI hari& operator-=(const hari& h) noexcept { *this = *this - h; return *this; }
-
+		
+		CEI hari operator-() const noexcept { return hari{ -h_ }; }
 		CEI operator int() const noexcept { return h_; }
 	};
 	CE hari operator+(const hari& x, const hari& y) noexcept { return hari{ static_cast<int>(x) + static_cast<int>(y) }; }
@@ -93,10 +94,9 @@ namespace Datime {
 		tanggal() = default;
 		CEI tanggal(const tahun& y, const bulan& m, const hari& d) noexcept
 			: y_(y),m_(m),d_(d) {}
-		CEI tanggal& operator+=(const hari& h)noexcept {
+		CEI tanggal& operator+=(const hari& n)noexcept {
 			int d = d_;
-			int n = h;
-			int nd = d + n;
+			int nd = d + int(n);
 			int nm = dom();
 			while (nd > nm) {
 				nd -= nm;
@@ -118,6 +118,12 @@ namespace Datime {
 			d_ = nd;
 			return *this;
 		}
+
+		CEI tanggal& operator-=(const hari& n)noexcept {
+			*this += -n;
+			return *this;
+		}
+	
 		CEI int dom(int y,int m) const noexcept {
 			constexpr int dpm[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 			tahun _y{ y };

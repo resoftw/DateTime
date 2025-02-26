@@ -10,7 +10,7 @@ int main()
 	for (int i = 0; i < 10; i++)
 	{
 		cout << tgl << endl;
-		tgl += hari{ 7 };
+		tgl -= hari{7 };
 	}
 }
 
