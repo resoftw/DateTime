@@ -134,7 +134,9 @@ namespace Datime {
 			return dom(y_,m_);
 		}
 		friend std::ostream& operator<<(std::ostream& os, const tanggal& d) {
-			os << d.y_ <<"/"<<std::setfill('0') << std::setw(2) <<d.m_<<"/"<< std::setfill('0') << std::setw(2)<<d.d_;
+			os << d.y_ <<"/"
+				<<std::setfill('0') << std::setw(2) <<d.m_<<"/"
+				<< std::setfill('0') << std::setw(2)<<d.d_;
 			return os;
 		}
 	};
