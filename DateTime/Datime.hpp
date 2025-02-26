@@ -361,12 +361,17 @@ namespace Datime {
 	CEI waktu operator-(const waktu& x, const waktu& y) noexcept {
 		return waktu{ x.detik() - y.detik() };
 	}
+
 	class tanggalwaktu {
 		tanggal tgl;
 		waktu wkt;
 	public:
 		tanggalwaktu() = default;
+		CEI tanggalwaktu(const tanggal& t) noexcept :tgl(t), wkt{ 0 } {}
 		CEI tanggalwaktu(const tanggal& t, const waktu& w) noexcept :tgl(t), wkt(w) {}
+		CEI tanggalwaktu(const int& y, const int& m, const int& d=1, const int& h=0, const int& mm=0, const int& s=0) noexcept
+			:tgl{ y,m,d }, wkt{ h,mm,s } {
+		}
 		CEI tanggalwaktu& operator+=(const hari& n)noexcept {
 			tgl += n;
 			return *this;
@@ -393,7 +398,7 @@ namespace Datime {
 		}
 		CEI tanggalwaktu& operator+=(const detik& n)noexcept {
 			wkt += n;
-			while (wkt.detik() > 86400) {
+			while (wkt.detik() >= 86400) {
 				wkt -= detik{ 86400 };
 				tgl += hari{ 1 };
 			}
@@ -408,7 +413,7 @@ namespace Datime {
 		}
 		CEI tanggalwaktu& operator+=(const menit& n)noexcept {
 			wkt += n;
-			while (wkt.detik() > 86400) {
+			while (wkt.detik() >= 86400) {
 				wkt -= detik{ 86400 };
 				tgl += hari{ 1 };
 			}
@@ -423,7 +428,7 @@ namespace Datime {
 		}
 		CEI tanggalwaktu& operator+=(const jam& n)noexcept {
 			wkt += n;
-			while (wkt.detik() > 86400) {
+			while (wkt.detik() >= 86400) {
 				wkt -= detik{ 86400 };
 				tgl += hari{ 1 };
 			}
