@@ -6,11 +6,11 @@ using namespace Datime;
 
 int main()
 {
-	tanggal tgl{2024,12,29};
-	for (int i = 0; i < 10; i++)
+	tanggalwaktu tgl{ {2025,2,1},{0,0,0} };
+	for (int i = 0; i < 30; i++)
 	{
 		cout << tgl << endl;
-		tgl -= hari{7 };
+		tgl += detik{ 12382 };
 	}
 }
 
