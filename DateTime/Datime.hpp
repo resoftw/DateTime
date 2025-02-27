@@ -358,7 +358,7 @@ namespace Datime {
 		return tmp;
 	}
 	CEI bool operator==(const waktu& x, const waktu& y) noexcept {
-		return x.detik() == y.detik();
+		return x.tik() == y.tik();
 	}
 	CEI bool operator!=(const waktu& x, const waktu& y) noexcept {
 		return !(x == y);
@@ -413,22 +413,22 @@ namespace Datime {
 		return x - y;
 	}
 	CEI waktu operator+(const waktu& x, const waktu& y) noexcept {
-		return waktu{ x.detik() + y.detik() };
+		return waktu{ x.tik() + y.tik() };
 	}
 	CEI waktu operator-(const waktu& x, const waktu& y) noexcept {
-		return waktu{ x.detik() - y.detik() };
+		return waktu{ x.tik() - y.tik() };
 	}
 	CEI bool operator>(const waktu& x, const waktu& y) noexcept {
-		return x.detik() > y.detik();
+		return x.tik() > y.tik();
 	}
 	CEI bool operator<(const waktu& x, const waktu& y) noexcept {
-		return x.detik() < y.detik();
+		return x.tik() < y.tik();
 	}
 	CEI bool operator>=(const waktu& x, const waktu& y) noexcept {
-		return x.detik() >= y.detik();
+		return x.tik() >= y.tik();
 	}
 	CEI bool operator<=(const waktu& x, const waktu& y) noexcept {
-		return x.detik() <= y.detik();
+		return x.tik() <= y.tik();
 	}
 
 	class tanggalwaktu {
@@ -471,11 +471,11 @@ namespace Datime {
 		}
 		CEI tanggalwaktu& operator+=(const detik& n)noexcept {
 			wkt += n;
-			while (wkt.detik() >= 86400) {
+			while (wkt.tik() >= 86400) {
 				wkt -= detik{ 86400 };
 				tgl += hari{ 1 };
 			}
-			while (wkt.detik() < 0) {
+			while (wkt.tik() < 0) {
 				wkt += detik{ 86400 };
 				tgl -= hari{ 1 };
 			}
@@ -486,11 +486,11 @@ namespace Datime {
 		}
 		CEI tanggalwaktu& operator+=(const menit& n)noexcept {
 			wkt += n;
-			while (wkt.detik() >= 86400) {
+			while (wkt.tik() >= 86400) {
 				wkt -= detik{ 86400 };
 				tgl += hari{ 1 };
 			}
-			while (wkt.detik() < 0) {
+			while (wkt.tik() < 0) {
 				wkt += detik{ 86400 };
 				tgl -= hari{ 1 };
 			}
@@ -501,11 +501,11 @@ namespace Datime {
 		}
 		CEI tanggalwaktu& operator+=(const jam& n)noexcept {
 			wkt += n;
-			while (wkt.detik() >= 86400) {
+			while (wkt.tik() >= 86400) {
 				wkt -= detik{ 86400 };
 				tgl += hari{ 1 };
 			}
-			while (wkt.detik() < 0) {
+			while (wkt.tik() < 0) {
 				wkt += detik{ 86400 };
 				tgl -= hari{ 1 };
 			}
@@ -515,13 +515,13 @@ namespace Datime {
 			return *this += -n;
 		}
 		CEI tanggalwaktu& operator+=(const waktu& n)noexcept {
-			tgl += hari{ n.detik() / 86400 };
-			wkt += detik{ n.detik() % 86400 };
+			tgl += hari{ n.tik() / 86400 };
+			wkt += detik{ n.tik() % 86400 };
 			return *this;
 		}
 		CEI tanggalwaktu& operator-=(const waktu& n)noexcept {
-			tgl -= hari{ n.detik() / 86400 };
-			wkt -= detik{ n.detik() % 86400 };
+			tgl -= hari{ n.tik() / 86400 };
+			wkt -= detik{ n.tik() % 86400 };
 			return *this;
 		}
 		CEI Datime::tanggal tanggal() const noexcept { return tgl; }
