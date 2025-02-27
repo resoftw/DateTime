@@ -1,16 +1,19 @@
 #pragma once
 #include <iostream>
+#include <sstream>
 #include <iomanip>
+#include <chrono>
+#include <optional>
 namespace Datime {
 #define CEI constexpr inline	
 #define CE constexpr
-	
+
 	enum class Hari {
-		Ahad,Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,
+		Ahad, Senin, Selasa, Rabu, Kamis, Jumat, Sabtu,
 	};
 	enum class Bulan {
-		January=1,Februari,Maret,April,Mei,Juni,
-		Juli,Agustus,September,Oktober,November,Desember,
+		January = 1, Februari, Maret, April, Mei, Juni,
+		Juli, Agustus, September, Oktober, November, Desember,
 	};
 
 	class tahun {
@@ -41,9 +44,9 @@ namespace Datime {
 		bulan() = default;
 		CEI bulan(int b) noexcept :b_(static_cast<decltype(b_)>(b)) {}
 		CEI bulan(Bulan b) noexcept :b_(static_cast<decltype(b_)>(b)) {}
-		CEI bulan& operator++() noexcept { *this += bulan{1}; return *this; }
+		CEI bulan& operator++() noexcept { *this += bulan{ 1 }; return *this; }
 		CEI bulan operator++(int) noexcept { auto tmp(*this); ++(*this); return tmp; }
-		CEI bulan& operator--() noexcept { *this -= bulan{1}; return *this; }
+		CEI bulan& operator--() noexcept { *this -= bulan{ 1 }; return *this; }
 		CEI bulan operator--(int) noexcept { auto tmp(*this); --(*this); return tmp; }
 		CEI bulan& operator+=(const bulan& b) noexcept { *this = *this + b; return *this; }
 		CEI bulan& operator-=(const bulan& b) noexcept { *this = *this - b; return *this; }
@@ -60,13 +63,13 @@ namespace Datime {
 	public:
 		hari() = default;
 		CEI hari(int h) noexcept :h_(static_cast<decltype(h_)>(h)) {}
-		CEI hari& operator++() noexcept { *this += hari{1}; return *this; }
+		CEI hari& operator++() noexcept { *this += hari{ 1 }; return *this; }
 		CEI hari operator++(int) noexcept { auto tmp(*this); ++(*this); return tmp; }
-		CEI hari& operator--() noexcept { *this -= hari{1}; return *this; }
+		CEI hari& operator--() noexcept { *this -= hari{ 1 }; return *this; }
 		CEI hari operator--(int) noexcept { auto tmp(*this); --(*this); return tmp; }
 		CEI hari& operator+=(const hari& h) noexcept { *this = *this + h; return *this; }
 		CEI hari& operator-=(const hari& h) noexcept { *this = *this - h; return *this; }
-		
+
 		CEI hari operator-() const noexcept { return hari{ -h_ }; }
 		CEI operator int() const noexcept { return h_; }
 	};
@@ -78,9 +81,9 @@ namespace Datime {
 	public:
 		jam() = default;
 		CEI jam(int j) noexcept :j_(static_cast<decltype(j_)>(j)) {}
-		CEI jam& operator++() noexcept { *this += jam{1}; return *this; }
+		CEI jam& operator++() noexcept { *this += jam{ 1 }; return *this; }
 		CEI jam operator++(int) noexcept { auto tmp(*this); ++(*this); return tmp; }
-		CEI jam& operator--() noexcept { *this -= jam{1}; return *this; }
+		CEI jam& operator--() noexcept { *this -= jam{ 1 }; return *this; }
 		CEI jam operator--(int) noexcept { auto tmp(*this); --(*this); return tmp; }
 		CEI jam& operator+=(const jam& j) noexcept { *this = *this + j; return *this; }
 		CEI jam& operator-=(const jam& j) noexcept { *this = *this - j; return *this; }
@@ -132,7 +135,8 @@ namespace Datime {
 	public:
 		tanggal() = default;
 		CEI tanggal(const tahun& y, const bulan& m, const hari& d) noexcept
-			: y_(y),m_(m),d_(d) {}
+			: y_(y), m_(m), d_(d) {
+		}
 		CEI tanggal(const int& y, const int& m, const int& d) noexcept
 			: y_(y), m_(m), d_(d) {
 		}
@@ -200,7 +204,7 @@ namespace Datime {
 			*this += -n;
 			return *this;
 		}
-	
+
 		CEI tanggal& operator+=(const tanggal& n)noexcept {
 			*this += n.y_;
 			*this += n.m_;
@@ -215,14 +219,14 @@ namespace Datime {
 		}
 
 
-		CEI int dom(int y,int m) const noexcept {
+		CEI int dom(int y, int m) const noexcept {
 			constexpr int dpm[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 			Datime::tahun _y{ y };
 			Datime::bulan _m{ m };
 			return (_m == 2 && _y.kabisat()) ? 29 : dpm[int(_m) - 1];
 		}
 		CEI int dom() const noexcept {
-			return dom(y_,m_);
+			return dom(y_, m_);
 		}
 
 		CEI Datime::tahun tahun() const noexcept { return y_; }
@@ -230,9 +234,9 @@ namespace Datime {
 		CEI Datime::hari hari() const noexcept { return d_; }
 
 		friend std::ostream& operator<<(std::ostream& os, const tanggal& d) {
-			os << d.y_ <<"/"
-				<<std::setfill('0') << std::setw(2) <<d.m_<<"/"
-				<< std::setfill('0') << std::setw(2)<<d.d_;
+			os << d.y_ << "/"
+				<< std::setfill('0') << std::setw(2) << d.m_ << "/"
+				<< std::setfill('0') << std::setw(2) << d.d_;
 			return os;
 		}
 	};
@@ -410,7 +414,7 @@ namespace Datime {
 		tanggalwaktu() = default;
 		CEI tanggalwaktu(const tanggal& t) noexcept :tgl(t), wkt{ 0 } {}
 		CEI tanggalwaktu(const tanggal& t, const waktu& w) noexcept :tgl(t), wkt(w) {}
-		CEI tanggalwaktu(const int& y, const int& m, const int& d=1, const int& h=0, const int& mm=0, const int& s=0) noexcept
+		CEI tanggalwaktu(const int& y, const int& m, const int& d = 1, const int& h = 0, const int& mm = 0, const int& s = 0) noexcept
 			:tgl{ y,m,d }, wkt{ h,mm,s } {
 		}
 		CEI tanggalwaktu& operator+=(const tanggal& n)noexcept {
@@ -498,6 +502,32 @@ namespace Datime {
 		}
 		CEI Datime::tanggal tanggal() const noexcept { return tgl; }
 		CEI Datime::waktu waktu() const noexcept { return wkt; }
+		inline std::string to_string() const noexcept {
+			std::ostringstream os; 
+			os << tgl << " " << wkt;
+			return os.str();
+		}
+		inline std::string to_utc() const noexcept {
+			std::ostringstream os;
+			os << tgl << "T" << wkt << "Z";
+			return os.str();
+		}
+		//STATICS
+		static std::optional<tanggalwaktu> from_string(const std::string& tms) {
+			std::tm t = {};
+			std::istringstream ss{ tms };
+			ss >> std::get_time(&t, "%Y-%m-%d %H:%M:%S");
+			if (ss.fail())return std::nullopt;
+			return tanggalwaktu{ t.tm_year + 1900,t.tm_mon + 1,t.tm_mday,t.tm_hour,t.tm_min,t.tm_sec };
+		}
+		static std::optional<tanggalwaktu> from_utc_string(const std::string& tms) {
+			std::tm t = {};
+			std::istringstream ss{ tms };
+			ss >> std::get_time(&t, "%Y-%m-%dT%H:%M:%SZ");
+			if (ss.fail())return std::nullopt;
+			return tanggalwaktu{ t.tm_year + 1900,t.tm_mon + 1,t.tm_mday,t.tm_hour,t.tm_min,t.tm_sec };
+		}
+		//FRIENDS
 		friend std::ostream& operator<<(std::ostream& os, const tanggalwaktu& tw) {
 			os << tw.tgl << " " << tw.wkt;
 			return os;
