@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <chrono>
+#include <ctime>
 #include <optional>
 namespace Datime {
 #define CEI constexpr inline	
@@ -233,6 +234,14 @@ namespace Datime {
 		CEI Datime::bulan bulan() const noexcept { return m_; }
 		CEI Datime::hari hari() const noexcept { return d_; }
 
+		inline std::string to_string() const noexcept {
+			std::ostringstream os;
+			os << y_ << "/"
+				<< std::setfill('0') << std::setw(2) << m_ << "/"
+				<< std::setfill('0') << std::setw(2) << d_;
+			return os.str();
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const tanggal& d) {
 			os << d.y_ << "/"
 				<< std::setfill('0') << std::setw(2) << d.m_ << "/"
@@ -274,7 +283,22 @@ namespace Datime {
 			return *this;
 		}
 
-		CEI int detik() const noexcept { return secs; }
+		CEI int tik() const noexcept { return secs; }
+		CEI int detik() const noexcept { return secs % 60; }
+		CEI int menit() const noexcept { return (secs % 3600) / 60; }
+		CEI int jam() const noexcept { return secs / 3600; }
+
+		inline std::string to_string() const noexcept {
+			std::ostringstream os;
+			int h = secs / 3600;
+			int m = (secs % 3600) / 60;
+			int s = secs % 60;
+			os << std::setfill('0') << std::setw(2) << h << ":"
+				<< std::setfill('0') << std::setw(2) << m << ":"
+				<< std::setfill('0') << std::setw(2) << s;
+			return os.str();
+		}
+
 
 		friend std::ostream& operator<<(std::ostream& os, const waktu& w) {
 			int h = w.secs / 3600;
@@ -526,6 +550,18 @@ namespace Datime {
 			ss >> std::get_time(&t, "%Y-%m-%dT%H:%M:%SZ");
 			if (ss.fail())return std::nullopt;
 			return tanggalwaktu{ t.tm_year + 1900,t.tm_mon + 1,t.tm_mday,t.tm_hour,t.tm_min,t.tm_sec };
+		}
+		static tanggalwaktu from_sys_time(const std::chrono::system_clock::time_point& tp) {
+			std::time_t t = std::chrono::system_clock::to_time_t(tp);
+			std::tm tm;
+			localtime_s(&tm, &t); // Konversi ke UTC
+			return tanggalwaktu{ tm.tm_year + 1900,tm.tm_mon + 1,tm.tm_mday,tm.tm_hour,tm.tm_min,tm.tm_sec };
+		}
+		static tanggalwaktu from_sys_time_utc(const std::chrono::system_clock::time_point& tp) {
+			std::time_t t = std::chrono::system_clock::to_time_t(tp);
+			std::tm tm_utc;
+			gmtime_s(&tm_utc, &t); // Konversi ke UTC
+			return tanggalwaktu{ tm_utc.tm_year + 1900,tm_utc.tm_mon + 1,tm_utc.tm_mday,tm_utc.tm_hour,tm_utc.tm_min,tm_utc.tm_sec };
 		}
 		//FRIENDS
 		friend std::ostream& operator<<(std::ostream& os, const tanggalwaktu& tw) {

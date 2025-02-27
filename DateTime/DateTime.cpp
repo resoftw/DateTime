@@ -15,5 +15,10 @@ int main()
 	//tanggalwaktu tgl2{ 2025,2,3 };
 
 	//cout << tgl2.tanggal() - tgl.tanggal() << "\n";
+	auto now = std::chrono::system_clock::now();
+	tanggalwaktu dtm = tanggalwaktu::from_sys_time(now);
+	tanggalwaktu dtm2 = tanggalwaktu::from_sys_time_utc(now);
+	cout << dtm << "\n";
+	cout << dtm2 << "\n";
 }
 
