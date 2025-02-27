@@ -503,7 +503,7 @@ namespace Datime {
 		CEI Datime::tanggal tanggal() const noexcept { return tgl; }
 		CEI Datime::waktu waktu() const noexcept { return wkt; }
 		inline std::string to_string() const noexcept {
-			std::ostringstream os; 
+			std::ostringstream os;
 			os << tgl << " " << wkt;
 			return os.str();
 		}
@@ -559,6 +559,66 @@ namespace Datime {
 		return tmp;
 	}
 	CEI tanggalwaktu operator-(const tanggalwaktu& x, const hari& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const bulan& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const bulan& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const tahun& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const tahun& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const detik& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const detik& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const menit& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const menit& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const jam& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const jam& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp -= y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator+(const tanggalwaktu& x, const waktu& y) noexcept {
+		tanggalwaktu tmp = x;
+		tmp += y;
+		return tmp;
+	}
+	CEI tanggalwaktu operator-(const tanggalwaktu& x, const waktu& y) noexcept {
 		tanggalwaktu tmp = x;
 		tmp -= y;
 		return tmp;
