@@ -234,6 +234,15 @@ namespace Datime {
 		CEI Datime::bulan bulan() const noexcept { return m_; }
 		CEI Datime::hari hari() const noexcept { return d_; }
 
+		static std::optional<tanggal> from_string(const std::string& tms) {
+			std::tm t = {};
+			std::istringstream ss{ tms };
+			ss >> std::get_time(&t, "%Y-%m-%d");
+			if (ss.fail())return std::nullopt;
+			return tanggal{ t.tm_year + 1900,t.tm_mon + 1,t.tm_mday };
+		}
+
+
 		inline std::string to_string() const noexcept {
 			std::ostringstream os;
 			os << y_ << "-"
