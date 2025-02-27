@@ -236,15 +236,15 @@ namespace Datime {
 
 		inline std::string to_string() const noexcept {
 			std::ostringstream os;
-			os << y_ << "/"
-				<< std::setfill('0') << std::setw(2) << m_ << "/"
+			os << y_ << "-"
+				<< std::setfill('0') << std::setw(2) << m_ << "-"
 				<< std::setfill('0') << std::setw(2) << d_;
 			return os.str();
 		}
 
 		friend std::ostream& operator<<(std::ostream& os, const tanggal& d) {
-			os << d.y_ << "/"
-				<< std::setfill('0') << std::setw(2) << d.m_ << "/"
+			os << d.y_ << "-"
+				<< std::setfill('0') << std::setw(2) << d.m_ << "-"
 				<< std::setfill('0') << std::setw(2) << d.d_;
 			return os;
 		}
