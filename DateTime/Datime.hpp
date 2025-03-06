@@ -234,7 +234,7 @@ namespace Datime {
 		CEI Datime::bulan bulan() const noexcept { return m_; }
 		CEI Datime::hari hari() const noexcept { return d_; }
 
-		static std::optional<tanggal> from_string(const std::string& tms) {
+		static std::optional<tanggal> from_string(const std::string& tms) noexcept {
 			std::tm t = {};
 			std::istringstream ss{ tms };
 			ss >> std::get_time(&t, "%Y-%m-%d");
@@ -546,14 +546,14 @@ namespace Datime {
 			return os.str();
 		}
 		//STATICS
-		static std::optional<tanggalwaktu> from_string(const std::string& tms) {
+		static std::optional<tanggalwaktu> from_string(const std::string& tms) noexcept {
 			std::tm t = {};
 			std::istringstream ss{ tms };
 			ss >> std::get_time(&t, "%Y-%m-%d %H:%M:%S");
 			if (ss.fail())return std::nullopt;
 			return tanggalwaktu{ t.tm_year + 1900,t.tm_mon + 1,t.tm_mday,t.tm_hour,t.tm_min,t.tm_sec };
 		}
-		static std::optional<tanggalwaktu> from_utc_string(const std::string& tms) {
+		static std::optional<tanggalwaktu> from_utc_string(const std::string& tms) noexcept {
 			std::tm t = {};
 			std::istringstream ss{ tms };
 			ss >> std::get_time(&t, "%Y-%m-%dT%H:%M:%SZ");
